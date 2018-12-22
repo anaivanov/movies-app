@@ -5,8 +5,11 @@
         <v-autocomplete
           :loading="loading"
           :items="items"
+          item-text="title"
+          item-value="id"
+          @change="addFav(selectedId)"
           :search-input.sync="search"
-          v-model="select"
+          v-model="selectedId"
           cache-items
           class="mx-3"
           flat
@@ -14,6 +17,7 @@
           hide-details
           label="Add movie to list"
           solo-inverted
+          clearable
         ></v-autocomplete>
       </v-flex>
     </v-layout>
@@ -28,25 +32,38 @@ export default {
       loading: false,
       items: [],
       search: null,
-      select: null,
+      selectedId: null,
+      favMovies: []
     };
   },
   watch: {
     search(val) {
-      val && val !== this.select && this.querySelections(val);
+      val && val !== this.selectedId && this.querySelections(val);
     }
   },
   methods: {
+    addFav(id){
+      this.favMovies.push(id)
+      let search = this.search
+      this.search=null;
+      this.search = null;
+      // setTimeout(() => { this.search = null; }, 100);
+      // POST request
+      console.log(id)
+    },
     querySelections(v) {
       let self=this;
       this.loading = true;
       axios
-        .get("/tmdb/3/search/movie?query="+v)
+        .get(process.env.VUE_APP_BACKEND_PATH + "tmdb/3/search/movie?query="+v)
         .then(function(response) {
           self.loading = false
-          self.items = response.data.results.map(x=>x.title)
+          self.items = response.data.results
         })
     }
+  },
+  created: function () {
+    // console.log(process.env.VUE_APP_BACKEND_PATH)
   }
 };
 </script>
