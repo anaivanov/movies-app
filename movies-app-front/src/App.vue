@@ -9,6 +9,7 @@
 
     <v-content>
       <Moviez/>
+
     </v-content>
   </v-app>
 </template>

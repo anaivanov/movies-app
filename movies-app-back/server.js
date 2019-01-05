@@ -6,6 +6,12 @@ const app = express()
 app.use('/', express.static('../movies-app-front/dist'))
 app.listen(8081)
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 const Sequelize = require('sequelize')
 
 const sequelize = new Sequelize('profile', 'root', '', {
@@ -21,7 +27,7 @@ sequelize.authenticate().then(() => {
 })
 
 const Films = sequelize.define('films', {
-    tmdbId: Sequelize.INTEGER,
+    tmdbId: { type: Sequelize.STRING, allowNull: false, unique: true },
 })
 
 app.get('/createdb', (request, response) => {
@@ -33,14 +39,6 @@ app.get('/createdb', (request, response) => {
     })
 })
 
-
-// app.get('/tmdb', (request, response) => {
-//     console.log(request.headers);
-//     var newurl = 'http://google.com/';
-//     request(newurl).pipe(res);
-
-
-// })
 
 var request = require('request');
 app.get('/tmdb/*', function (req, res) {
@@ -56,3 +54,38 @@ app.get('/tmdb/*', function (req, res) {
 
 });
 
+app.use(express.json())
+app.use(express.urlencoded())
+
+app.post('/film', (request, response) => {
+    Films.create(request.body).then((result) => {
+        response.status(201).json(result)
+    }).catch((err) => {
+        response.status(500).send("resource not created")
+    })
+})
+
+app.get('/films', (request, response) => {
+    Films.findAll().then((results) => {
+        response.status(200).json(results)
+    })
+})
+
+
+app.delete('/film/:id', (request, response) => {
+    Films.findOne({ where: {tmdbId: request.params.id}}).then((message) => {
+        if(message) {
+            message.destroy().then((result) => {
+                response.status(204).send()
+            }).catch((err) => {
+                console.log(err)
+                response.status(500).send('database error')
+            })
+        } else {
+            response.status(404).send('resource not found')
+        }
+    }).catch((err) => {
+        console.log(err)
+        response.status(500).send('database error')
+    })
+})
