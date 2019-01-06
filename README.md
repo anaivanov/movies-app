@@ -188,7 +188,7 @@ Exemplu:
 DELETE /film/133694
 ```
 
-# ATENTIE
+## Token TMDB
 Pentru a putea rula partea de backend a aplicatiei este nevoie de un token TMDB care trebuie pus in fisierul .env.
 Exemplu:
 ```
