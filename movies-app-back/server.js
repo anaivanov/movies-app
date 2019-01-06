@@ -42,15 +42,11 @@ app.get('/createdb', (request, response) => {
 
 
 var request = require('request');
-app.get('/tmdb/*', function (req, res) {
-    //modify the url in any way you want
-    
+app.get('/tmdb/*', function (req, res) {    
     var newurl = 'https://api.themoviedb.org/' + req.param(0);
-    // request(newurl).pipe(res);
-    console.log(newurl);
-    // delete req.query.api_key;
+    // console.log(newurl);
     req.query.api_key = process.env.API_KEY
-    console.log(req.query);
+    // console.log(req.query);
     req.pipe(request({ qs: req.query, uri: newurl })).pipe(res);
 
 });
