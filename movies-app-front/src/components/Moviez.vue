@@ -5,11 +5,14 @@
                 <v-autocomplete :loading="loading" :items="items" item-text="title" item-value="id" @change="addFav(selectedId)" :search-input.sync="search" v-model="selectedId" cache-items class="mx-3" flat hide-no-data hide-details label="Add movie to list" solo-inverted clearable ></v-autocomplete>
             </v-flex>
         </v-layout>
-            <v-layout wrap>
-                <v-flex xs3 md2 v-for="id in favMovies" v-bind:key="id">
-                    <Card :idcard="id" @delete="deleteCard(id)"/>
-                </v-flex>
-            </v-layout>
+        <v-container v-bind="{ [`grid-list-lg`]: true }" fluid>
+
+        <v-layout row wrap>
+            <v-flex xs6 sm4 md3 lg2 v-for="id in favMovies" v-bind:key="id">
+                <Card :idcard="id" @delete="deleteCard(id)"/>
+            </v-flex>
+        </v-layout>
+        </v-container>
     </v-container>
 </template>
 
@@ -71,4 +74,7 @@ export default {
 </script>
 
 <style>
+.mb2 {
+  margin-bottom: 15px;
+}
 </style>

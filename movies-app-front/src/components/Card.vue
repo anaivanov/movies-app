@@ -1,20 +1,35 @@
 <template>
- <v-card v-if="carddata.id">
-        <v-img
-          :src="'https://image.tmdb.org/t/p/w185' + carddata.poster_path"
-        ></v-img>
+  <div v-if="carddata.id" style="height: 100%">
 
-        <v-card-title primary-title>
-          <div>
-              <h3 class="headline mb-0">{{carddata.original_title}}</h3>
-          </div>
-        </v-card-title>
+    <v-card height="100%" v-show="!flipped">
+      <v-img aspect-ratio="0.66" :src="'https://image.tmdb.org/t/p/w185' + carddata.poster_path"></v-img>
+      <v-card-title>
+        <div>
+          <h3 class="subheading ma-0 mb-4">{{carddata.original_title}}</h3>
+        </div>
+      </v-card-title>
+      <span class="actions">
+        <v-btn icon @click="flipped=!flipped">
+          <v-icon>flip_to_back</v-icon>
+        </v-btn>
+        <v-btn icon v-on:click="$emit('delete')">
+          <v-icon>delete</v-icon>
+        </v-btn>
+      </span>
+    </v-card>
 
-        <v-card-actions>
-          <v-btn flat >Share</v-btn>
-          <v-btn flat v-on:click="$emit('delete')">Delete</v-btn>
-        </v-card-actions>
-      </v-card>
+    <v-card height="100%" v-show="flipped">
+      <div class="overview">{{carddata.overview}}</div>
+      <span class="actions">
+        <v-btn icon @click="flipped=!flipped">
+          <v-icon>flip_to_front</v-icon>
+        </v-btn>
+        <v-btn icon v-on:click="$emit('delete')">
+          <v-icon>delete</v-icon>
+        </v-btn>
+      </span>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -23,7 +38,8 @@ export default {
   props: ["idcard"],
   data() {
     return {
-      carddata: {}
+      carddata: {},
+      flipped: false
     };
   },
   created: function() {
@@ -36,3 +52,21 @@ export default {
   }
 };
 </script>
+<style scoped>
+.actions {
+  position: absolute;
+  bottom: 0px;
+}
+
+.overview{
+  display: block;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow: auto;
+  max-height: 21.6em;
+  line-height: 1.8em;
+
+  padding: 10px;
+  margin-bottom: 50px;
+}
+</style>
