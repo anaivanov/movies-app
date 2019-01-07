@@ -4,7 +4,7 @@
 
 * Aplicatia este o lista interactiva unde utilizatorul poate adauga si sterge filme pe care vrea sa le vizioneze.
 * Aceasta are ca si grup tinta persoane de orice varsta care vor sa managerieze mai usor filmele care ii intereseaza.
-* Ca alternativa un utilizator poate folosi o aplicatie de notite, dar nu aceasta nu poate cauta in filmele aparute si nu afiseaza detalii despre film.
+* Ca alternativa un utilizator poate folosi o aplicatie de notite, dar aceasta nu poate cauta in filmele aparute si nu afiseaza detalii despre film.
 
 ## Interfețe aplicație
 Cu ajutorul figma.com am creat un mock-up initial care poate fi vizualizat [aici](https://www.figma.com/file/gAUHnUN9Lotf2Kba6eEOYsC9/movies-app?node-id=0%3A1).
@@ -183,7 +183,9 @@ Exemplu raspuns:
 
 ```
 ```
-DELETE /film/:{id}
+DELETE /film/:{id} - sterge un film din baza de date
+```
+```
 Exemplu:
 DELETE /film/133694
 ```
